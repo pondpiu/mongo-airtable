@@ -20,6 +20,12 @@ export async function pullTable({ auth_key,  base_name, primary, view, database,
   })
 
   records = records.map((record) => {
+    Object.keys(record).forEach(function (key) {
+      if (!key.includes('.')) return
+      const keyWithoutDot = key.replace(/\./g, '(dot)')
+      record[keyWithoutDot] = record[key]
+      delete record[key]
+    })
     flatten.forEach((f) => {
       record[f] = record[f][0]
     })
